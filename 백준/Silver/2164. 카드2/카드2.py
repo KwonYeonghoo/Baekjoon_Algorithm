@@ -49,8 +49,9 @@ for i in range(1, N+1):
 while queue.size() >= 2:
     queue.pop()
     # print(queue.head, queue.tail)
-    queue.dat[queue.tail] = queue.pop()
-    queue.tail += 1
+    temp = queue.front()
+    queue.pop()
+    queue.push(temp)
     # print(queue.head, queue.tail)
 
 print(queue.front())
