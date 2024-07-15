@@ -1,13 +1,17 @@
+# OX 퀴즈
 n = int(input())
-arr = [input() for _ in range(n)]
-# OOXXOXXOOO
-for a in arr:
+arrs = [[a for a in input()] for _ in range(n)]
+
+def get_score(arr):
+    result = 0
     score = 0
-    add = 1
-    for ox in a:
-        if ox == 'O':
-            score += add
-            add += 1
-        if ox == 'X':
-            add = 1
-    print(score)
+    for a in arr:
+        if a == "O":
+            score += 1
+        else:
+            score = 0
+        result += score
+    return result
+
+for arr in arrs:
+    print(get_score(arr))
