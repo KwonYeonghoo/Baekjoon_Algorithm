@@ -2,7 +2,8 @@
 This is an auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
 
 ## 📚공부 기록📚
-**7/17(수)**
+### 2024 여름방학 알고리즘 스터디
+**7/17(수) - BFS**
 - 1018/체스판 다시 칠하기/브루트포스
 - 1259/펠린드롬수
 - 1546/평균
@@ -14,7 +15,7 @@ This is an auto push repository for Baekjoon Online Judge created with [Baekjoon
 - 10250/ACM호텔
 - 1926/그림/BFS
 ---
-**7/24(수)**
+**7/24(수) - 재귀**
 - 17478/재귀함수가 뭔가요?/재귀
 - 27433/팩토리얼2/재귀
 - 10870/피보나치수5/재귀
