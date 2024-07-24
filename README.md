@@ -1,7 +1,7 @@
 # Baekjoon_Algorithm
 This is an auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
 
-## 공부 기록
+## 📚공부 기록📚
 **7/17(수)**
 - 1018/체스판 다시 칠하기/브루트포스
 - 1259/펠린드롬수
