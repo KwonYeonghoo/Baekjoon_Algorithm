@@ -1,34 +1,39 @@
-
+import sys
 from collections import deque
 
-
 N, M = list(map(int, input().split()))
-maze = [input() for _ in range(N)]
-dist = [[-1 for _ in range(M)] for _ in range(N)]
+arr = [input() for _ in range(N)]
+vis = [[0 for _ in range(M)] for _ in range(N)]
 
 dx = [-1, 0, 1, 0]
 dy = [0, 1, 0, -1]
 
-min_distance = 10000
 
-# 시작점 (0,0)
-dist[0][0] = 1
-# 큐에 삽입
+def OOB(nx, ny):
+    if nx < 0 or nx >= N or ny < 0 or ny >= M:
+        return True
+    else:
+        return False
+
+
+ans = 0
 q = deque()
 q.append([0, 0])
+vis[0][0] = 1
+
 while len(q):
     x, y = q.popleft()
+    if x == (N - 1) and y == (M - 1):
+        print(vis[x][y])
+        break
+    count = 0
     for dir in range(4):
         nx = x + dx[dir]
         ny = y + dy[dir]
-        if nx == (N-1) and ny == (M-1):
-            ans = dist[x][y] + 1
-            min_distance = min(min_distance, ans)
-            break
-        if nx < 0 or ny < 0 or nx >= N or ny >= M:
+        if OOB(nx, ny) or arr[nx][ny] == "0" or vis[nx][ny] != 0:
             continue
-        if dist[nx][ny] != -1 or maze[nx][ny] == '0':
-            continue
+        count += 1
         q.append([nx, ny])
-        dist[nx][ny] = dist[x][y] + 1
-print(min_distance)
+        vis[nx][ny] = vis[x][y] + 1
+    if count != 0:
+        ans += 1
