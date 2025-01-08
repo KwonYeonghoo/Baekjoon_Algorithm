@@ -9,9 +9,10 @@ dir_dict = {"B": 0, "R": 1, "T": 2, "L": 3}
 king, rock, N = input().split()
 N = int(N)
 
-convert_pos = lambda x: [a2n[x[0]], int(x[1]) - 1]
-king = convert_pos(king)
-rock = convert_pos(rock)
+convert_a2n = lambda x: [a2n[x[0]], int(x[1]) - 1]
+convert_n2a = lambda x: f"{n2a[x[0]]}{x[1]+1}"
+king = convert_a2n(king)
+rock = convert_a2n(rock)
 
 
 def OOB(nx, ny):
@@ -42,6 +43,6 @@ for _ in range(N):
     else:
         continue
 
-king = f"{n2a[king[0]]}{king[1]+1}"
-rock = f"{n2a[rock[0]]}{rock[1]+1}"
+king = convert_n2a(king)
+rock = convert_n2a(rock)
 print(f"{king}\n{rock}")
