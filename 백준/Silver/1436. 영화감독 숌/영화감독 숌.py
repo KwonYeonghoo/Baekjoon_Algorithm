@@ -1,24 +1,23 @@
-def check_666(n):
-    cnt = 0
-    num = str(n)
-    for w in num:
-        if w == "6":
-            cnt += 1
-            if cnt == 3:
-                return True
+def is_jongmal_number(num):
+    num = str(num)
+    count = 1
+    for i in range(len(num) - 1):
+        if num[i] == "6" and num[i + 1] == "6":
+            count += 1
         else:
-            cnt = 0
+            count = 1
+        if count >= 3:
+            return True
     return False
 
 
 N = int(input())
-
-num = 666
-cnt = 0
-while cnt <= 10000:
-    if check_666(num):
-        cnt += 1
-        if cnt == N:
-            print(num)
+ans = 0
+n = 1
+while True:
+    if is_jongmal_number(n):
+        ans += 1
+        if ans == N:
+            print(n)
             break
-    num += 1
+    n += 1
