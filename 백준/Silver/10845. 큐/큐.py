@@ -1,3 +1,5 @@
+import sys
+
 class Queue:
     def __init__(self, N):
         self.queue = [0] * (N + 1)
@@ -35,7 +37,7 @@ N = int(input())
 q = Queue(N)
 
 for _ in range(N):
-    cmd = input().split()
+    cmd = sys.stdin.readline().strip().split()
     if len(cmd) == 2:
         q.push(int(cmd[1]))
     else:
