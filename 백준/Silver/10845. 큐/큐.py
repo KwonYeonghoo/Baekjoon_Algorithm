@@ -1,56 +1,51 @@
 class Queue:
-    def __init__(self, max_size=1000005):
-        self.dat = [0] * max_size
-        self.head = 0
-        self.tail = 0
+    def __init__(self, N):
+        self.queue = [0] * (N + 1)
+        self.left = -1
+        self.right = -1
 
     def push(self, x):
-        self.dat[self.tail] = x
-        self.tail += 1
+        self.right += 1
+        self.queue[self.right] = x
 
     def pop(self):
-        if self.head == self.tail:
+        if self.left == self.right:
             return -1
-        self.head += 1
-        return self.dat[self.head-1]
+        self.left += 1
+        return self.queue[self.left]
+
+    def size(self):
+        return self.right - self.left
+
+    def empty(self):
+        return int(self.right == self.left)
 
     def front(self):
-        if self.head == self.tail:
+        if self.left == self.right:
             return -1
-        return self.dat[self.head]
+        return self.queue[self.left + 1]
 
     def back(self):
-        if self.head == self.tail:
+        if self.left == self.right:
             return -1
-        return self.dat[self.tail - 1]
-    
-    def size(self):
-        return self.tail - self.head
-    
-    def empty(self):
-        if self.head == self.tail:
-            return 1
-        return 0
-    
+        return self.queue[self.right]
+
+
 N = int(input())
+q = Queue(N)
 
-queue = Queue()
-
-prompts = [input().split() for _ in range(N)]
-for prompt in prompts:
-    if prompt[0] == "push":
-        queue.push(prompt[1])
-    elif prompt[0] == "front":
-        print(queue.front())
-    elif prompt[0] == "back":
-        print(queue.back())
-    elif prompt[0] == "size":
-        print(queue.size())
-    elif prompt[0] == "pop":
-        print(queue.pop())
-    elif prompt[0] == "empty":
-        print(queue.empty())
-        
-
-
-
+for _ in range(N):
+    cmd = input().split()
+    if len(cmd) == 2:
+        q.push(int(cmd[1]))
+    else:
+        if cmd[0] == "pop":
+            print(q.pop())
+        elif cmd[0] == "size":
+            print(q.size())
+        elif cmd[0] == "empty":
+            print(q.empty())
+        elif cmd[0] == "front":
+            print(q.front())
+        elif cmd[0] == "back":
+            print(q.back())
