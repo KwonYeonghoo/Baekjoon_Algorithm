@@ -1,51 +1,43 @@
+# push X, pop, size, empty, top
+N = int(input())
+
+
 class Stack:
-    def __init__(self, length):
-        self.length = length
-        self.arr = [0 for _ in range(length)]
-        self.idx = 0
-        
-    def push(self, data):
-        if self.idx < self.length:
-            self.arr[self.idx] = data
-            self.idx += 1
+    def __init__(self):
+        self.stack = []
+        self.size = 0
+
+    def push(self, x):
+        self.stack.append(x)
+        self.size += 1
 
     def pop(self):
-        if self.idx == 0: 
+        if self.isempty():
             return -1
-        self.idx -= 1
-        return self.arr[self.idx] # pop한 값 반환
+        self.size -= 1
+        return self.stack.pop()
+
+    def isempty(self):
+        return int(self.size == 0)
 
     def top(self):
-        if self.idx == 0: 
+        if self.isempty():
             return -1
-        return self.arr[self.idx - 1]
-    
-    def empty(self):
-        if self.idx == 0:
-            return 1
-        else:
-            return 0
-    
-    def __str__(self):
-        if self.idx == 0:
-            return "빈 스택입니다."
-        return str(self.arr[:self.idx])
-    
-# stack = stack.Stack(10000)
-stack = Stack(10000)
+        return self.stack[-1]
 
-n = int(input())
 
-prompts = [input().split() for _ in range(n)]
+s = Stack()
 
-for prompt in prompts:
-    if prompt[0] == 'push':
-        stack.push(prompt[1])
-    elif prompt[0] == 'pop':
-        print(stack.pop())
-    elif prompt[0] == 'size':
-        print(stack.idx)
-    elif prompt[0] == 'empty':
-        print(stack.empty())
+for _ in range(N):
+    cmd = input().split()
+    if len(cmd) == 2:
+        s.push(int(cmd[1]))
     else:
-        print(stack.top())
+        if cmd[0] == "top":
+            print(s.top())
+        elif cmd[0] == "size":
+            print(s.size)
+        elif cmd[0] == "pop":
+            print(s.pop())
+        else:
+            print(s.isempty())
