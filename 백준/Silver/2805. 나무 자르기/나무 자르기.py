@@ -1,27 +1,33 @@
-N, M = tuple(map(int, input().split()))
-trees = list(map(int, input().split()))
-MAX_TAKEAWAY_LEN = 2000000000
+import sys
 
-def is_satisfying(trees, cut_len):
-    count = 0
-    for tree in trees:
-        if cut_len >= tree: # 절단기보다 나무가 짧은 경우
-            continue
-        takeaway = tree - cut_len
-        count += takeaway
-    if count >= M:
-        return True
-    else:
-        return False
-    
-def binary_search(trees, max_takeaway_len):
-    low, high = 0, max_takeaway_len+1
-    while low+1 < high:
-        mid = (low + high) // 2
-        if is_satisfying(trees, mid):
-            low = mid
+N, M = map(int, input().split())
+trees = list(map(int, sys.stdin.readline().strip().split()))
+# 이분탐색으로 절단기 높이를 조절
+# 나무의 수(N)은 100만이므로, O(N) 시간에 돌 수 있음
+MAX_HEIGHT = 10000000000
+
+
+def binary_search(max_height, k):
+    left = 0
+    right = max_height
+    while left + 1 < right:
+        mid = (left + right) // 2
+        if cut_tree(mid) >= k:
+            left = mid
         else:
-            high = mid
-    return low
+            right = mid
+        # print(f"left: {left} / right: {right} / mid: {mid}")
+    return left
 
-print(binary_search(trees, MAX_TAKEAWAY_LEN))
+
+def cut_tree(height):
+    result = 0
+    for tree in trees:
+        if tree <= height:
+            continue
+        else:
+            result += tree - height
+    return result
+
+
+print(binary_search(MAX_HEIGHT, M))
