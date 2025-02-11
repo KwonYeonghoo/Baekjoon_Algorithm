@@ -1,41 +1,46 @@
+import sys
 from collections import deque
+
+input = sys.stdin.readline
 
 dx = [-1, 0, 1, 0]
 dy = [0, 1, 0, -1]
 
-M, N = list(map(int, input().split()))
-tomatoes = [list(map(int, input().split())) for _ in range(N)]
-day_count = [[0 for _ in range(M)] for _ in range(N)]
+M, N = map(int, input().strip().split())
+arr = [list(map(int, input().strip().split())) for _ in range(N)]
+visited = [[-1] * M for _ in range(N)]
+Q = deque()
 
-ans = 0
-q = deque()
+
+def OOB(nx, ny):
+    return nx < 0 or ny < 0 or nx >= N or ny >= M
+
+
+unripe_tomato = 0
 for i in range(N):
     for j in range(M):
-        if tomatoes[i][j] == 1:
-            q.append([i, j])
+        if arr[i][j] == 0:
+            unripe_tomato += 1
+        elif arr[i][j] == 1:
+            Q.append([i, j])
+            visited[i][j] = 0
+        else:
+            visited[i][j] = 0
 
-while len(q):
-    x, y = q.popleft()
+day_count = 0
+while Q:
+    x, y = Q.popleft()
     for dir in range(4):
         nx = x + dx[dir]
         ny = y + dy[dir]
-        if nx < 0 or ny < 0  or nx >= N or ny >= M:
+        if OOB(nx, ny) or visited[nx][ny] != -1:
             continue
-        if tomatoes[nx][ny] == 1 or tomatoes[nx][ny] == -1:
-            continue
-        # tomatoes[nx][ny]가 0일 때
-        tomatoes[nx][ny] = 1
-        q.append([nx, ny])
-        day_count[nx][ny] = day_count[x][y] + 1
-        ans = day_count[nx][ny]
+        Q.append([nx, ny])
+        visited[nx][ny] = visited[x][y] + 1
+        unripe_tomato -= 1
+        day_count = visited[nx][ny]
 
-flag = False
-for row in tomatoes:
-    if 0 in row:
-        flag = True
-        break
-
-if flag == True:
+if unripe_tomato != 0:
     print(-1)
 else:
-    print(ans)
+    print(day_count)
