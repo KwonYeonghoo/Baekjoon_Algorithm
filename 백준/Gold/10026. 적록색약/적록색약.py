@@ -1,93 +1,68 @@
-# 적록색약
-
+import sys
 from collections import deque
+input = sys.stdin.readline
 
-N = int(input())
-arr = [input() for _ in range(N)]
+N = int(input().strip())
+arr = [input().strip() for _ in range(N)]
+weak_visited = [[0] * N for _ in range(N)]
+visited = [[0] * N for _ in range(N)]
 
-dx = [1, 0, -1, 0]
+dx = [-1, 0, 1, 0]
 dy = [0, 1, 0, -1]
 
+
 def OOB(nx, ny):
-    if nx < 0 or nx >= N or ny < 0 or ny >= N:
-        return True
-    else:
-        return False
+    return nx < 0 or ny < 0 or nx >= N or ny >= N
 
-def color_weak(arr):
-    RG, B = 0, 0
-    cw_vis = [[-1 for _ in range(N)] for _ in range(N)]
-    
-    for i in range(N):
-        for j in range(N):
-            q = deque()
-            q.append([i,j])
-            if arr[i][j] in ['R','G'] and cw_vis[i][j] == -1:
-                cw_vis[i][j] = 0
-                while len(q):
-                    x, y = q.popleft()
-                    for dir in range(4):
-                        nx = x + dx[dir]
-                        ny = y + dy[dir]
-                        if arr[x][y] in ['R','G']:
-                            if not OOB(nx, ny) and arr[nx][ny] in ['R','G'] and cw_vis[nx][ny] == -1:
-                                q.append([nx, ny])
-                                cw_vis[nx][ny] = 0
-                RG += 1
-            elif arr[i][j] == 'B' and cw_vis[i][j] == -1:
-                cw_vis[i][j] = 1
-                while len(q):
-                    x, y = q.popleft()
-                    for dir in range(4):
-                        nx = x + dx[dir]
-                        ny = y + dy[dir]
-                        if not OOB(nx, ny) and arr[nx][ny] == 'B' and cw_vis[nx][ny] == -1:
-                            q.append([nx, ny])
-                            cw_vis[nx][ny] = 1
-                B += 1
-    return RG + B
 
-def non_color_weak(arr):
-    R, G, B = 0, 0, 0
-    ncw_vis = [[-1 for _ in range(N)] for _ in range(N)]
-    
-    for i in range(N):
-        for j in range(N):
-            q = deque()
-            q.append([i, j])
-            if arr[i][j] == 'R' and ncw_vis[i][j] == -1:
-                ncw_vis[i][j] = 0
-                while len(q):
-                    x, y = q.popleft()
-                    for dir in range(4):
-                        nx = x + dx[dir]
-                        ny = y + dy[dir]
-                        if not OOB(nx, ny) and arr[nx][ny] == 'R' and ncw_vis[nx][ny] == -1:
-                            q.append([nx, ny])
-                            ncw_vis[nx][ny] = 0
-                R += 1
-            if arr[i][j] == 'G' and ncw_vis[i][j] == -1:
-                ncw_vis[i][j] = 1
-                while len(q):
-                    x, y = q.popleft()
-                    for dir in range(4):
-                        nx = x + dx[dir]
-                        ny = y + dy[dir]
-                        if not OOB(nx, ny) and arr[nx][ny] == 'G' and ncw_vis[nx][ny] == -1:
-                            q.append([nx, ny])
-                            ncw_vis[nx][ny] = 1
-                G += 1
-            if arr[i][j] == 'B' and ncw_vis[i][j] == -1:
-                ncw_vis[i][j] = 2
-                while len(q):
-                    x, y = q.popleft()
-                    for dir in range(4):
-                        nx = x + dx[dir]
-                        ny = y + dy[dir]
-                        if not OOB(nx, ny) and arr[nx][ny] == 'B' and ncw_vis[nx][ny] == -1:
-                            q.append([nx, ny])
-                            ncw_vis[nx][ny] = 2
-                B += 1
-    return R+G+B
+weakQ = deque()
+Q = deque()
+weak_result = 0
+result = 0
 
-print(non_color_weak(arr), color_weak(arr))
+for i in range(N):
+    for j in range(N):
+        if visited[i][j] != 1:
+            Q.append([i, j])
+            visited[i][j] = 1
+            current_color = arr[i][j]
+            size = 0
+            while Q:
+                x, y = Q.popleft()
+                for dir in range(4):
+                    nx = x + dx[dir]
+                    ny = y + dy[dir]
+                    if (
+                        OOB(nx, ny)
+                        or visited[nx][ny] == 1
+                        or arr[nx][ny] != current_color
+                    ):
+                        continue
+                    Q.append([nx, ny])
+                    visited[nx][ny] = 1
+                    size += 1
+            result += 1
+        if weak_visited[i][j] != 1:
+            weakQ.append([i, j])
+            weak_visited[i][j] = 1
+            current_color = arr[i][j]
+            size = 0
+            while weakQ:
+                x, y = weakQ.popleft()
+                for dir in range(4):
+                    nx = x + dx[dir]
+                    ny = y + dy[dir]
+                    if OOB(nx, ny) or weak_visited[nx][ny] == 1:
+                        continue
+                    if current_color in "RG":
+                        if arr[nx][ny] not in "RG":
+                            continue
+                    else:
+                        if arr[nx][ny] != current_color:
+                            continue
+                    weakQ.append([nx, ny])
+                    weak_visited[nx][ny] = 1
+                    size += 1
+            weak_result += 1
+
+print(result, weak_result)
