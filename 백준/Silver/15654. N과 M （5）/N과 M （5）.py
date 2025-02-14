@@ -1,19 +1,26 @@
-N, M = tuple(map(int, input().split()))
-arr = sorted(list(map(int, input().split())))
-vis = [0 for _ in range(N)]
-ans = []
+import sys
+input = sys.stdin.readline
 
-def backtracking(curr):
-    if curr == M:
-        print(' '.join(map(str, ans)))
+N, M = map(int, input().strip().split())
+arr = sorted(list(map(int, input().strip().split())))
+
+result = []
+visited = [0] * N
+
+
+def backtracking(d):
+    if d == M:
+        print(" ".join(map(str, result)))
         return
+
     for i in range(N):
-        if vis[i] == 1:
+        if visited[i] == 1:
             continue
-        ans.append(arr[i])
-        vis[i] = 1
-        backtracking(curr+1)
-        ans.pop()
-        vis[i] = 0
+        result.append(arr[i])
+        visited[i] = 1
+        backtracking(d + 1)
+        result.pop()
+        visited[i] = 0
+
 
 backtracking(0)
