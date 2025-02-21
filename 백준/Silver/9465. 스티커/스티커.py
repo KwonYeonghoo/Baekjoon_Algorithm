@@ -1,35 +1,21 @@
 import sys
+input = sys.stdin.readline
 
+# 딱 보면 BFS 문제처럼 보임
+# 여러 경우의 수 중 최대/최소를 구하는 문제 --> DP로 접근해보기
 
-# 완전탐색 X, DP
-# 2차원 DP 테이블
-# 각 테이블의 요소: 해당 요소를 선택했을 때 스티커 합의 최댓값
-# 점화식:
-# DP[0][i] = max(DP[1][i-1], DP[1][i-2], DP[0][i-2]) + stickers[0][i]
-# DP[1][i] = max(DP[0][i-1], DP[0][i-2], DP[1][i-2]) + stickers[1][i]
-
-
-T = int(input())
+T = int(input().strip())
 for _ in range(T):
-    N = int(input())
-    stickers = [list(map(int, input().split())) for _ in range(2)]
+    N = int(input().strip())
+    arr = [list(map(int, input().strip().split())) for _ in range(2)]
+    dp = [[0] * N for _ in range(2)]
     if N == 1:
-        print(max(stickers[0][0], stickers[1][0]))
+        print(max(arr[0][0], arr[1][0]))
         continue
-    dp_table = [[0] * N for _ in range(2)]
-    dp_table[0][0], dp_table[1][0] = stickers[0][0], stickers[1][0]
-    dp_table[0][1], dp_table[1][1] = (
-        stickers[0][1] + dp_table[1][0],
-        stickers[1][1] + dp_table[0][0],
-    )
-    for i in range(2, N):
-        dp_table[0][i] = (
-            max(dp_table[1][i - 1], dp_table[1][i - 2], dp_table[0][i - 2])
-            + stickers[0][i]
-        )
-        dp_table[1][i] = (
-            max(dp_table[0][i - 1], dp_table[0][i - 2], dp_table[1][i - 2])
-            + stickers[1][i]
-        )
+    dp[0][0], dp[1][0] = arr[0][0], arr[1][0]
+    dp[0][1], dp[1][1] = dp[1][0] + arr[0][1], dp[0][0] + arr[1][1]
 
-    print(max(dp_table[0][N - 1], dp_table[1][N - 1]))
+    for i in range(2, N):
+        dp[0][i] = max(dp[1][i - 1], dp[1][i - 2]) + arr[0][i]
+        dp[1][i] = max(dp[0][i - 1], dp[0][i - 2]) + arr[1][i]
+    print(max(dp[0][-1], dp[1][-1]))
