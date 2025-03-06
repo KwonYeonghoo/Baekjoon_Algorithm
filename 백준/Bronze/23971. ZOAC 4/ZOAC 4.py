@@ -1,19 +1,8 @@
 import sys
-
 input = sys.stdin.readline
 
 H, W, N, M = map(int, input().strip().split())
 
-
-def OOB(x, y):
-    return x >= H or y >= W
-
-
-count = 0
-for i in range(0, H, N + 1):
-    for j in range(0, W, M + 1):
-        if OOB(i, j):
-            continue
-        count += 1
-
-print(count)
+a = H // (N + 1) if H % (N + 1) == 0 else H // (N + 1) + 1
+b = W // (M + 1) if W % (M + 1) == 0 else W // (M + 1) + 1
+print(a * b)
