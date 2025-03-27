@@ -1,0 +1,17 @@
+-- 코드를 입력하세요
+# 리뷰를 가장 많이 작성한 회원의 리뷰들을 조회
+# 회원 이름, 리뷰 텍스트, 리뷰 작성일
+
+WITH most_review AS (
+    SELECT MEMBER_ID
+    FROM REST_REVIEW
+    GROUP BY MEMBER_ID
+    ORDER BY COUNT(MEMBER_ID) DESC
+    LIMIT 1
+)
+
+SELECT mp.MEMBER_NAME, rr.REVIEW_TEXT, DATE_FORMAT(rr.REVIEW_DATE, "%Y-%m-%d") REVIEW_DATE
+FROM REST_REVIEW rr JOIN MEMBER_PROFILE mp ON rr.MEMBER_ID = mp.MEMBER_ID
+WHERE rr.MEMBER_ID = (SELECT * FROM most_review)
+ORDER BY rr.REVIEW_DATE, rr.REVIEW_TEXT
+
